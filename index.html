@@ -632,13 +632,13 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:
       <div class="contact-form-wrap rv d1">
         <form id="cform" onsubmit="fsub(event)">
           <div class="f-row">
-            <div class="fg"><label>Ime</label><input type="text" placeholder="Tvoje ime" required></div>
-            <div class="fg"><label>Prezime</label><input type="text" placeholder="Prezime"></div>
+            <div class="fg"><label>Ime</label><input type="text" name="name" placeholder="Tvoje ime" required></div>
+            <div class="fg"><label>Prezime</label><input type="text" name="prezime" placeholder="Prezime"></div>
           </div>
-          <div class="fg"><label>Email</label><input type="email" placeholder="tvoj@email.com" required></div>
+          <div class="fg"><label>Email</label><input type="email" name="email" placeholder="tvoj@email.com" required></div>
           <div class="fg">
             <label>Vrsta projekta</label>
-            <select>
+            <select name="vrsta_projekta">
               <option value="" disabled selected>Odaberi...</option>
               <option>Nova web stranica</option>
               <option>Redesign stranice</option>
@@ -648,9 +648,9 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:
               <option>Nešto drugo</option>
             </select>
           </div>
-          <div class="fg"><label>Poruka</label><textarea rows="4" placeholder="Opiši projekt, ciljeve, rokove..." required></textarea></div>
+          <div class="fg"><label>Poruka</label><textarea rows="4" name="message" placeholder="Opiši projekt, ciljeve, rokove..." required></textarea></div>
           <button type="submit" class="f-submit">Pošalji poruku →</button>
-          <div class="f-ok" id="fok">✓ Poruka primljena — javim se uskoro.</div>
+          <div class="f-ok" id="fok">✓ Hvala! Vaša poruka je uspješno poslana.</div>
         </form>
       </div>
     </div>
@@ -708,15 +708,27 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 // FORM
 function fsub(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.f-submit');
+  const form = e.target;
+  const btn = form.querySelector('.f-submit');
   btn.textContent = 'Šaljem...';
   btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('fok').style.display = 'block';
+  fetch('https://formspree.io/f/xzdqdloz', {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  }).then(res => {
+    if (res.ok) {
+      document.getElementById('fok').style.display = 'block';
+      form.reset();
+    } else {
+      return res.json().then(data => { throw new Error(data.error || 'Greška'); });
+    }
+  }).catch(() => {
+    btn.textContent = 'Greška — pokušaj ponovo';
+  }).finally(() => {
     btn.textContent = 'Pošalji poruku →';
     btn.disabled = false;
-    e.target.reset();
-  }, 1200);
+  });
 }
 
 // COUNTER ANIMATIONS
