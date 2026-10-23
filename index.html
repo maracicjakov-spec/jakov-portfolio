@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jakov</title>
-<meta name="description" content="Web designer, developer i programmer. AI-powered builds, premium digital products.">
+<title>Jakov | Web dizajn i izrada web stranica, Rijeka</title>
+<meta name="description" content="Web dizajner i developer iz Rijeke. Premium web stranice za apartmane, vile, salone i lokalne biznise.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -126,6 +126,14 @@ h1 b{font-weight:800;display:block}
 .proj-link:hover{gap:10px}
 .scroll-hint{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;font-weight:400}
 .scroll-hint svg{opacity:.4}
+
+/* ── CONCEPTS ── */
+.concepts-lead{max-width:340px;margin-bottom:0}
+.concepts-note{font-size:12px;color:var(--ink3);margin-top:28px;line-height:1.6;font-weight:400}
+#concepts .proj-img{background:var(--bg2)}
+#concepts .proj-img-num{display:none}
+#concepts .proj-img.is-empty .proj-img-num{display:block}
+.proj-img.is-empty .proj-idx{color:var(--ink3);text-shadow:none}
 
 /* ── SKILLS ── */
 #skills{background:var(--bg2)}
@@ -365,6 +373,39 @@ html.gs .split-line>span{display:block;will-change:transform}
   *{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
+
+<!-- ═══════════ CINEMATIC VIDEO LAYER (CSS) ═══════════
+     Sve ovdje vrijedi tek kad JS doda html.cine (GSAP učitan, bez reduced-motion).
+     Bez JS-a / GSAP-a stranica izgleda točno kao prije. -->
+<style>
+/* Omotači slike u karticama: develop (ulaz) → dolly (kamera u h-scrollu) → ken burns → img.
+   Hover zoom ostaje na samom img (svojstvo `scale`), pa se ništa ne sudara. */
+.cine-dev,.cine-dolly,.cine-kb{position:absolute;inset:0}
+.cine-dev{overflow:hidden}
+/* Dolly treba malo "viška" slike lijevo/desno da se pri pomaku ne vidi rub */
+html.cine-dolly-on #projects .cine-dolly{left:-12%;right:-12%}
+
+/* Marquee: skew po brzini scrolla (vrijednost postavlja JS) */
+html.cine .marquee-item{transform:skewX(var(--mq-skew,0deg))}
+
+/* Filmsko zrno: SVG šum, 8 "sličica" u sekundi, samo transform */
+.cine-grain{position:fixed;inset:-10%;z-index:450;pointer-events:none;opacity:.035;transition:opacity .6s ease;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;animation:cine-grain 1s steps(1) infinite}
+.cine-grain.on-dark{opacity:.05}
+@keyframes cine-grain{
+  0%{transform:translate(0,0)}
+  12.5%{transform:translate(-3%,-6%)}
+  25%{transform:translate(5%,2%)}
+  37.5%{transform:translate(-6%,4%)}
+  50%{transform:translate(2%,-5%)}
+  62.5%{transform:translate(-2%,6%)}
+  75%{transform:translate(6%,-2%)}
+  87.5%{transform:translate(-5%,-1%)}
+  100%{transform:translate(0,0)}
+}
+@media(prefers-reduced-motion:reduce){.cine-grain{display:none}}
+</style>
 </head>
 <body>
 
@@ -394,6 +435,7 @@ html.gs .split-line>span{display:block;will-change:transform}
       <ul class="nav-links">
         <li><a href="#about">O meni</a></li>
         <li><a href="#projects">Projekti</a></li>
+        <li><a href="#concepts">Koncepti</a></li>
         <li><a href="#skills">Usluge</a></li>
         <li><a href="#testimonials">Recenzije</a></li>
       </ul>
@@ -408,6 +450,7 @@ html.gs .split-line>span{display:block;will-change:transform}
 <div class="mob-menu" id="mmenu">
   <a href="#about" onclick="this.parentElement.classList.remove('open')">O meni</a>
   <a href="#projects" onclick="this.parentElement.classList.remove('open')">Projekti</a>
+  <a href="#concepts" onclick="this.parentElement.classList.remove('open')">Koncepti</a>
   <a href="#skills" onclick="this.parentElement.classList.remove('open')">Usluge</a>
   <a href="#testimonials" onclick="this.parentElement.classList.remove('open')">Recenzije</a>
   <a href="#contact" onclick="this.parentElement.classList.remove('open')">Kontakt</a>
@@ -423,7 +466,7 @@ html.gs .split-line>span{display:block;will-change:transform}
         <h1 class="rv d1"><span class="h1row">Jakov</span></h1>
       </div>
       <div class="hero-right rv d2">
-        <p class="hero-desc">Kreiram premium digitalna iskustva koristeći moderni design pristup i AI-powered workflow — od ideje do deployed produkta.</p>
+        <p class="hero-desc">Kreiram premium web stranice za apartmane, vile i lokalne biznise. Od ideje do objave, s besplatnim demom prije bilo kakve obveze.</p>
         <div class="hero-ctas">
           <a href="#projects" class="cta-main">Pogledaj radove <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <a href="#contact" class="cta-sec">Radi sa mnom →</a>
@@ -441,25 +484,19 @@ html.gs .split-line>span{display:block;will-change:transform}
 <!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span class="marquee-item"><strong>Claude Code</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Lovable</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Codex / GPT</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Cursor</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Antigravity</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Gemini</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>HTML / CSS / JS</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>GSAP</strong><span class="marquee-sep"></span></span>
     <span class="marquee-item"><strong>GitHub</strong><span class="marquee-sep"></span></span>
     <span class="marquee-item"><strong>Vercel</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>HTML / CSS / JS</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>Netlify</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>Google Search Console</strong><span class="marquee-sep"></span></span>
     <!-- duplicate for seamless loop -->
-    <span class="marquee-item"><strong>Claude Code</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Lovable</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Codex / GPT</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Cursor</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Antigravity</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>Gemini</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>HTML / CSS / JS</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>GSAP</strong><span class="marquee-sep"></span></span>
     <span class="marquee-item"><strong>GitHub</strong><span class="marquee-sep"></span></span>
     <span class="marquee-item"><strong>Vercel</strong><span class="marquee-sep"></span></span>
-    <span class="marquee-item"><strong>HTML / CSS / JS</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>Netlify</strong><span class="marquee-sep"></span></span>
+    <span class="marquee-item"><strong>Google Search Console</strong><span class="marquee-sep"></span></span>
   </div>
 </div>
 
@@ -472,12 +509,12 @@ html.gs .split-line>span{display:block;will-change:transform}
         <h2 class="sec-h rv d1">Gradim web<br><b>koji ostaje</b><br>u sjećanju</h2>
         <p class="about-q rv d2">"Design nije samo kako nešto izgleda — design je kako nešto funkcionira."</p>
         <p class="about-p rv d2">Ja sam Jakov, web designer i developer iz Rijeke. Specijaliziran sam za kreiranje premium digitalnih produkata za lokalne biznise, startupove i kreativce koji žele se istaknuti.</p>
-        <p class="about-p rv d3">Kombiniram klasičan hands-on development s najmodernijim AI alatima — Claude Code, Lovable, Cursor i Gemini — kako bih isporučio brže, bez žrtvovanja kvalitete.</p>
+        <p class="about-p rv d3">Svaku stranicu dizajniram i razvijam sam, od prve skice do objave, i ostajem dostupan kad treba nešto promijeniti. Radim direktno s vlasnicima, bez agencije u sredini.</p>
         <p class="about-p rv d3">Radim isključivo s lokalnim obrtima, ugostiteljskim objektima, apartmanima i vilama na Kvarneru i Dalmaciji — donoseći im nove klijente kroz moderan web koji se zaista pronalazi na Googleu.</p>
         <div class="about-stats rv d3">
           <div><div class="about-stat-n">10+</div><div class="about-stat-l">Projekata</div></div>
           <div><div class="about-stat-n">2+</div><div class="about-stat-l">Godina</div></div>
-          <div><div class="about-stat-n">8</div><div class="about-stat-l">AI alata</div></div>
+          <div><div class="about-stat-n">100%</div><div class="about-stat-l">Zadovoljnih</div></div>
         </div>
       </div>
     </div>
@@ -492,13 +529,13 @@ html.gs .split-line>span{display:block;will-change:transform}
       <div class="hpanel hpanel-intro">
         <div class="sec-num rv">02 / Projekti</div>
         <h2 class="sec-h rv d1">Odabrani<br><b>radovi</b></h2>
-        <div class="hprog"><span class="hprog-line"><span class="hprog-fill" id="hprogFill"></span></span><span class="hprog-txt" id="hprogTxt">01 / 04</span></div>
+        <div class="hprog"><span class="hprog-line"><span class="hprog-fill" id="hprogFill"></span></span><span class="hprog-txt" id="hprogTxt">01 / 03</span></div>
       </div>
 
       <div class="proj-card rv" data-cursor="view" onclick="window.open('https://kucazaodmorena.com/','_blank')" style="cursor:pointer">
         <div class="proj-img">
           <span class="proj-idx">01 — Jadranovo</span>
-          <img src="img/img4.jpg" alt="Kuća za odmor Ena">
+          <img src="img/img4.webp" alt="Kuća za odmor Ena" width="1080" height="720" loading="lazy" decoding="async">
           <div class="proj-overlay">
             <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
           </div>
@@ -514,7 +551,7 @@ html.gs .split-line>span{display:block;will-change:transform}
       <div class="proj-card rv" data-cursor="view" onclick="window.open('https://apartman55.com/','_blank')" style="cursor:pointer">
         <div class="proj-img">
           <span class="proj-idx">02 — Rijeka</span>
-          <img src="img/img1.jpg" alt="Apartman 55">
+          <img src="img/img1.webp" alt="Apartman 55" width="1600" height="609" loading="lazy" decoding="async">
           <div class="proj-overlay">
             <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
           </div>
@@ -530,36 +567,21 @@ html.gs .split-line>span{display:block;will-change:transform}
       <div class="proj-card rv" data-cursor="view" onclick="window.open('https://frizerskistudioreplay.com/','_blank')" style="cursor:pointer">
         <div class="proj-img">
           <span class="proj-idx">03 — Rijeka</span>
-          <img src="img/img2.jpg" alt="Frizerski Studio Replay">
+          <img src="img/img2.webp" alt="Frizerski Studio Replay" width="1286" height="743" loading="lazy" decoding="async">
           <div class="proj-overlay">
             <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
           </div>
         </div>
         <div class="proj-body">
-          <div class="proj-tags"><span class="proj-tag">Lovable</span><span class="proj-tag">React</span></div>
+          <div class="proj-tags"><span class="proj-tag">Web Design</span><span class="proj-tag">React</span></div>
           <div class="proj-title">Frizerski Studio Replay</div>
           <p class="proj-desc">Elegantna i moderna web stranica za frizerski salon s pregledom usluga, galerijom radova i jednostavnim kontaktom. Cilj projekta bio je stvoriti profesionalan online identitet koji odražava kvalitetu usluge i olakšava komunikaciju s klijentima.</p>
         </div>
         <div class="proj-foot"><a href="https://frizerskistudioreplay.com/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Pogledaj <span>→</span></a><span style="font-size:11px;color:var(--ink3)">2025</span></div>
       </div>
 
-      <div class="proj-card rv" data-cursor="view" onclick="window.open('https://apartman-ljeto.netlify.app/','_blank')" style="cursor:pointer">
-        <div class="proj-img">
-          <span class="proj-idx">04 — Crikvenica</span>
-          <img src="img/img3.jpg" alt="Apartman Ljeto">
-          <div class="proj-overlay">
-            <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-          </div>
-        </div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="proj-tag">Web Design</span><span class="proj-tag">Branding</span></div>
-          <div class="proj-title">Apartman Ljeto</div>
-          <p class="proj-desc">Web stranica za turistički smještaj osmišljena kako bi gostima pružila brz pregled sadržaja, lokacije i mogućnosti rezervacije. Fokus projekta bio je na čistom dizajnu, vizualnom dojmu i jednostavnom korisničkom iskustvu.</p>
-        </div>
-        <div class="proj-foot"><a href="https://apartman-ljeto.netlify.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Pogledaj <span>→</span></a><span style="font-size:11px;color:var(--ink3)">2025</span></div>
-      </div>
-
       <div class="hpanel hpanel-outro">
+        <div class="sec-num rv">+ još projekata u izradi · reference na upit</div>
         <div class="sec-num rv">Sljedeći projekt</div>
         <h3 class="houtro-h rv d1">Tvoja priča<br><b>ide ovdje.</b></h3>
         <a href="#contact" class="cta-main rv d2" style="width:fit-content">Pokreni projekt <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -569,11 +591,128 @@ html.gs .split-line>span{display:block;will-change:transform}
   </div>
 </section>
 
+<!-- CONCEPTS -->
+<section id="concepts" class="sec">
+  <div class="sec-inner">
+    <div class="sec-num rv">03 / Koncepti</div>
+    <div class="proj-header">
+      <h2 class="sec-h rv d1">Demo <b>stranice</b></h2>
+      <p class="about-p concepts-lead rv d2">Demo stranice koje sam izradio za različite vrste biznisa. Sve su live, otvorite ih i isprobajte.</p>
+    </div>
+    <div class="proj-grid concepts-grid">
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://villa-ziganto.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">01</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-vila.webp" alt="Demo stranica za privatnu vilu u Opatiji" width="1400" height="934" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Vila</span></div>
+            <div class="proj-title">Privatna vila</div>
+            <p class="proj-desc">Luksuzna vila s bazenom iznad Kvarnera, s cinematic galerijom i upitom za boravak.</p>
+          </div>
+          <div class="proj-foot"><a href="https://villa-ziganto.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Opatija</span></div>
+        </div>
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://fitness-top-form.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">02</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-fitness.webp" alt="Demo stranica za fitness studio u Rijeci" width="1400" height="933" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Fitness</span></div>
+            <div class="proj-title">Fitness studio</div>
+            <p class="proj-desc">Treninzi u malim grupama, programi i treneri, složeni da novi član odmah zna gdje se javiti.</p>
+          </div>
+          <div class="proj-foot"><a href="https://fitness-top-form.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Rijeka</span></div>
+        </div>
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://sinjori-barbershop-novi.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">03</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-barber.webp" alt="Demo stranica za barbershop u Varaždinu" width="680" height="510" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Barbershop</span></div>
+            <div class="proj-title">Barbershop</div>
+            <p class="proj-desc">Usluge, cjenik i galerija uz brzo naručivanje bez zvanja.</p>
+          </div>
+          <div class="proj-foot"><a href="https://sinjori-barbershop-novi.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Varaždin</span></div>
+        </div>
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://fizio-centar-cvitanovic.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">04</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-fizio.webp" alt="Demo stranica za fizioterapiju u Rijeci" width="681" height="530" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Fizioterapija</span></div>
+            <div class="proj-title">Fizioterapija</div>
+            <p class="proj-desc">Tretmani objašnjeni jednostavno i kontakt koji ulijeva povjerenje.</p>
+          </div>
+          <div class="proj-foot"><a href="https://fizio-centar-cvitanovic.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Rijeka</span></div>
+        </div>
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://miora-real-estate.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">05</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-nekretnine.jpg" alt="Demo stranica za agenciju za nekretnine u Crikvenici" width="1400" height="875" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Nekretnine</span></div>
+            <div class="proj-title">Agencija za nekretnine</div>
+            <p class="proj-desc">Ponuda nekretnina koja se sama sinkronizira iz agencijskog sustava, s pretragom po vrsti.</p>
+          </div>
+          <div class="proj-foot"><a href="https://miora-real-estate.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Crikvenica</span></div>
+        </div>
+
+        <div class="proj-card" data-cursor="view" onclick="window.open('https://autoservisparanak.vercel.app/','_blank')" style="cursor:pointer">
+          <div class="proj-img">
+            <span class="proj-img-num" aria-hidden="true">06</span>
+            <span class="proj-idx">Live demo</span>
+            <img src="img/koncepti/koncept-autoservis.jpg" alt="Demo stranica za auto servis u Zadru" width="1400" height="875" loading="lazy" decoding="async" onerror="this.closest('.proj-img').classList.add('is-empty');this.remove()">
+            <div class="proj-overlay">
+              <div class="proj-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-tags"><span class="proj-tag">Auto servis</span></div>
+            <div class="proj-title">Auto servis</div>
+            <p class="proj-desc">Usluge servisa, radionica i lokacija, s pozivom i porukom na dohvat palca.</p>
+          </div>
+          <div class="proj-foot"><a href="https://autoservisparanak.vercel.app/" target="_blank" rel="noopener" class="proj-link" onclick="event.stopPropagation()">Otvori demo <span>↗</span></a><span style="font-size:11px;color:var(--ink3)">Zadar</span></div>
+        </div>
+
+    </div>
+    <p class="concepts-note">Koncepti su demo stranice izrađene kao prijedlog i ne predstavljaju službene stranice navedenih biznisa.</p>
+  </div>
+</section>
+
 <!-- SKILLS / SERVICES -->
 <section id="skills" class="sec">
   <div class="skills-bg-float" aria-hidden="true"></div>
   <div class="sec-inner">
-    <div class="sec-num rv">03 / Usluge i alati</div>
+    <div class="sec-num rv">04 / Usluge i alati</div>
     <h2 class="sec-h rv d1">Što radim<br><b>i kako</b></h2>
     <div class="skills-g">
       <div class="skills-services rv d2">
@@ -594,83 +733,60 @@ html.gs .split-line>span{display:block;will-change:transform}
         <div class="svc">
           <span class="svc-n">03</span>
           <div class="svc-body">
-            <strong>AI-Powered Build</strong>
-            <p>Koristim Claude Code, Lovable, Cursor i Gemini za brže isporuke bez žrtvovanja kvalitete. Kompleksni projekti gotovi u rekordnom roku.</p>
+            <strong>Održavanje</strong>
+            <p>Mjesečni paket: hosting, izmjene teksta i fotografija, sezonske cijene i redovna provjera da sve radi. Vi se ne morate brinuti ni o čemu.</p>
           </div>
         </div>
         <div class="svc">
           <span class="svc-n">04</span>
           <div class="svc-body">
             <strong>Lokalni biznis paketi</strong>
-            <p>Restoran, salon, villa, barber shop — affordable kompletni web paket s SEO optimizacijom, kontakt formom i Google Maps integracijom.</p>
+            <p>Apartmani, vile, saloni, restorani: kompletna web stranica s SEO optimizacijom, kontakt formom, WhatsApp gumbom i Google Maps lokacijom. Cijena na upit, ovisno o opsegu.</p>
           </div>
         </div>
       </div>
       <div class="tools-grid rv d3">
         <div class="tool-row">
           <div class="tool-icon">
-            <img src="https://cdn.simpleicons.org/html5/CC3E14" width="22" height="22" alt="HTML5" style="opacity:0.7;">
+            <img src="https://cdn.simpleicons.org/html5/CC3E14" width="22" height="22" alt="HTML5" style="opacity:0.7;" loading="lazy" decoding="async">
           </div>
           <div style="flex:1"><div class="tool-name">HTML / CSS / JS</div><div class="tool-cat">Core web tech</div></div>
           <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span></div>
         </div>
         <div class="tool-row">
           <div class="tool-icon">
-            <img src="data:image/png;base64,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" width="22" height="22" alt="Claude Code" style="object-fit:contain;opacity:0.75;">
+            <img src="https://cdn.simpleicons.org/gsap/0AE448" width="22" height="22" alt="GSAP" style="opacity:0.7;" loading="lazy" decoding="async">
           </div>
-          <div style="flex:1"><div class="tool-name">Claude Code</div><div class="tool-cat">AI coding agent</div></div>
-          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span></div>
-        </div>
-        <div class="tool-row">
-          <div class="tool-icon">
-            <img src="data:image/png;base64,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" width="22" height="22" alt="Lovable" style="object-fit:contain;opacity:0.75;">
-          </div>
-          <div style="flex:1"><div class="tool-name">Lovable</div><div class="tool-cat">AI app builder</div></div>
+          <div style="flex:1"><div class="tool-name">GSAP</div><div class="tool-cat">Animacije</div></div>
           <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
         </div>
         <div class="tool-row">
           <div class="tool-icon">
-            <img src="data:image/png;base64,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" width="22" height="22" alt="Cursor" style="object-fit:contain;opacity:0.75;">
-          </div>
-          <div style="flex:1"><div class="tool-name">Cursor</div><div class="tool-cat">AI code editor</div></div>
-          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
-        </div>
-        <div class="tool-row">
-          <div class="tool-icon">
-            <img src="data:image/png;base64,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" width="22" height="22" alt="Gemini" style="object-fit:contain;opacity:0.75;">
-          </div>
-          <div style="flex:1"><div class="tool-name">Gemini</div><div class="tool-cat">Google AI</div></div>
-          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span><span class="dot-e"></span></div>
-        </div>
-        <div class="tool-row">
-          <div class="tool-icon">
-            <img src="https://cdn.simpleicons.org/github/2A2A2A" width="22" height="22" alt="GitHub" style="opacity:0.7;">
+            <img src="https://cdn.simpleicons.org/github/2A2A2A" width="22" height="22" alt="GitHub" style="opacity:0.7;" loading="lazy" decoding="async">
           </div>
           <div style="flex:1"><div class="tool-name">GitHub</div><div class="tool-cat">Version control</div></div>
           <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
         </div>
         <div class="tool-row">
           <div class="tool-icon">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAD/ElEQVR42u2YP2xbVRTGf+e+9+zEThPHbpoAiZpGTUVp+VMBTYB0AEQlJiS2DkgwtSA6wMSAgAUBFQIGFiRWJiQmBlAXhKhgaFSl1JAGp40aAWlNS1oncWK/dw9DbCt//IfGCXWQr/Qk27o+77vfPed8370SBIGKCNthqCquiLBdAAMYttloAm4CXjPcLanmFZ9lOwCW7cZwNghYCAJaHIeo4zRuDvu6nAxvTU6w97vTnPj1AgBWtbGLbjbwmc3n+Dufb5wuoUCgii2XZwX1dLdAQU09heWIYACLrluMrukWdwywrmD3tfEkybkMBlkF2rDMrmkEhlUVAV5IjvHJ5ATPjY1ycX4OQUrFNe/7+LkcGd9vnJR4NtFFS2uEyUyGYxfGCKwFVXxrOX5PL5899Ahv7N6zvMBNZFqstbfth60qRoSvrs1wPHme3kiEc0MjledbizH1NyRV3RjglaDTuSWMCEu3MpxP/YZxPRCwCq7A/QMDdMc6S/PrNvC1JgVVmn5eLV2uB8bw6ZkfOPnO29DRAfPzoAohj8TOLj589SQvPnO0xHRQQ0iMSEV5rwnYqcKKg2DVIoDnujiRCJFYjKHhYcKex/j0NJOXLvHSqQ94dHAfB/r7QbVqzLq8RDYI+OnmLIqWtTSKcii6g3g4vLwb+RyJ9nZOv/c+IMzcuMGhV04wMzXFN6NnOdDfz818ntG5TJW2qRxuj7HDdcu+1a2Wn6nsAk+d/RHKMSICvs+3Dw9xtKu71NJUlbnFRVpDYXricXrica6mUmRzOQAmFuZ4ulJMBKzP94ef4EhnAltmN6oy7IoQdUMg61cqIixh8MpUvxHBMQZrLdYW9qfwYlcMLZ6Hw/o8FYQlLR+zKuBiNQ9Govz82EhFiVWFHs8r5bqUtlBKiyp+MwV090ajJIePVM3T3nBLxfqpyfCe1kjV4PkgwKqihWc5NXRVKyo+ACExDNSIWZeBt5X4VbCAVzDojuMgxuA6ziplK/7uFOZptZiFCdX69caFo6Dr5zK38ETY7Tj8kU4TDrfQt2tXqcJ/T6dZyGbp2ZkgFm2r0G+2WOmKXeTjK5d5fTxJXyTK1MiTW34E/1dKVwnsu5dTvJmaAIX7om2oKnlrcYzh67+uceZ6mgc6OjnWczda+M9mmKANk3I9n4d8jsfjcb44+OBy3hmDEeHLqzOcuvgLn/85XQK6WY7tthkuFsRH+/Yz2NrK8913kfBCq3Kz3XVxQ2Firtc4x3wFXu7rL32WNYbJV61pcv7zM52v5V2GKezEVhRhXRcplU7Fi9ZifZ+stY19GViEvzcS4WBHjP3Rts2/BtuocNyJoarN++Em4CbgJuD/G2BXVbcNWFXlH911nvZd7T41AAAAAElFTkSuQmCC" width="22" height="22" alt="Netlify" style="object-fit:contain;opacity:0.75;">
+            <img src="https://cdn.simpleicons.org/vercel/2A2A2A" width="22" height="22" alt="Vercel" style="opacity:0.7;" loading="lazy" decoding="async">
+          </div>
+          <div style="flex:1"><div class="tool-name">Vercel</div><div class="tool-cat">Hosting & deploy</div></div>
+          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
+        </div>
+        <div class="tool-row">
+          <div class="tool-icon">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAD/ElEQVR42u2YP2xbVRTGf+e+9+zEThPHbpoAiZpGTUVp+VMBTYB0AEQlJiS2DkgwtSA6wMSAgAUBFQIGFiRWJiQmBlAXhKhgaFSl1JAGp40aAWlNS1oncWK/dw9DbCt//IfGCXWQr/Qk27o+77vfPed8370SBIGKCNthqCquiLBdAAMYttloAm4CXjPcLanmFZ9lOwCW7cZwNghYCAJaHIeo4zRuDvu6nAxvTU6w97vTnPj1AgBWtbGLbjbwmc3n+Dufb5wuoUCgii2XZwX1dLdAQU09heWIYACLrluMrukWdwywrmD3tfEkybkMBlkF2rDMrmkEhlUVAV5IjvHJ5ATPjY1ycX4OQUrFNe/7+LkcGd9vnJR4NtFFS2uEyUyGYxfGCKwFVXxrOX5PL5899Ahv7N6zvMBNZFqstbfth60qRoSvrs1wPHme3kiEc0MjledbizH1NyRV3RjglaDTuSWMCEu3MpxP/YZxPRCwCq7A/QMDdMc6S/PrNvC1JgVVmn5eLV2uB8bw6ZkfOPnO29DRAfPzoAohj8TOLj589SQvPnO0xHRQQ0iMSEV5rwnYqcKKg2DVIoDnujiRCJFYjKHhYcKex/j0NJOXLvHSqQ94dHAfB/r7QbVqzLq8RDYI+OnmLIqWtTSKcii6g3g4vLwb+RyJ9nZOv/c+IMzcuMGhV04wMzXFN6NnOdDfz818ntG5TJW2qRxuj7HDdcu+1a2Wn6nsAk+d/RHKMSICvs+3Dw9xtKu71NJUlbnFRVpDYXricXrica6mUmRzOQAmFuZ4ulJMBKzP94ef4EhnAltmN6oy7IoQdUMg61cqIixh8MpUvxHBMQZrLdYW9qfwYlcMLZ6Hw/o8FYQlLR+zKuBiNQ9Govz82EhFiVWFHs8r5bqUtlBKiyp+MwV090ajJIePVM3T3nBLxfqpyfCe1kjV4PkgwKqihWc5NXRVKyo+ACExDNSIWZeBt5X4VbCAVzDojuMgxuA6ziplK/7uFOZptZiFCdX69caFo6Dr5zK38ETY7Tj8kU4TDrfQt2tXqcJ/T6dZyGbp2ZkgFm2r0G+2WOmKXeTjK5d5fTxJXyTK1MiTW34E/1dKVwnsu5dTvJmaAIX7om2oKnlrcYzh67+uceZ6mgc6OjnWczda+M9mmKANk3I9n4d8jsfjcb44+OBy3hmDEeHLqzOcuvgLn/85XQK6WY7tthkuFsRH+/Yz2NrK8913kfBCq3Kz3XVxQ2Firtc4x3wFXu7rL32WNYbJV61pcv7zM52v5V2GKezEVhRhXRcplU7Fi9ZifZ+stY19GViEvzcS4WBHjP3Rts2/BtuocNyJoarN++Em4CbgJuD/G2BXVbcNWFXlH911nvZd7T41AAAAAElFTkSuQmCC" width="22" height="22" alt="Netlify" style="object-fit:contain;opacity:0.75;" loading="lazy" decoding="async">
           </div>
           <div style="flex:1"><div class="tool-name">Netlify</div><div class="tool-cat">Hosting & deploy</div></div>
           <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
         </div>
         <div class="tool-row">
           <div class="tool-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#555" xmlns="http://www.w3.org/2000/svg" style="opacity:0.75;">
-<path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.843-3.369 2.02-1.168a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.402-.681zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/>
-</svg>
+            <img src="https://cdn.simpleicons.org/googlesearchconsole/458CF5" width="22" height="22" alt="Google Search Console" style="opacity:0.7;" loading="lazy" decoding="async">
           </div>
-          <div style="flex:1"><div class="tool-name">Codex / GPT</div><div class="tool-cat">OpenAI models</div></div>
-          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span><span class="dot-e"></span></div>
-        </div>
-        <div class="tool-row">
-          <div class="tool-icon">
-            <img src="data:image/png;base64,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" width="22" height="22" alt="Antigravity" style="object-fit:contain;opacity:0.75;">
-          </div>
-          <div style="flex:1"><div class="tool-name">Antigravity</div><div class="tool-cat">AI workflow</div></div>
-          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span><span class="dot-e"></span></div>
+          <div style="flex:1"><div class="tool-name">Google Search Console</div><div class="tool-cat">SEO i indeksiranje</div></div>
+          <div class="tool-level"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></div>
         </div>
       </div>
     </div>
@@ -680,7 +796,7 @@ html.gs .split-line>span{display:block;will-change:transform}
 <!-- TESTIMONIALS -->
 <section id="testimonials" class="sec">
   <div class="sec-inner">
-    <div class="sec-num rv">04 / Recenzije</div>
+    <div class="sec-num rv">05 / Recenzije</div>
     <h2 class="sec-h rv d1">Što klijenti<br><b>govore</b></h2>
     <div class="testi-g">
       <div class="testi-card rv">
@@ -720,7 +836,7 @@ html.gs .split-line>span{display:block;will-change:transform}
   <div class="contact-inner">
     <div class="contact-top">
       <div>
-        <div class="sec-num rv" style="color:rgba(255,255,255,.3)">05 / Kontakt</div>
+        <div class="sec-num rv" style="color:rgba(255,255,255,.3)">06 / Kontakt</div>
         <h2 class="contact-h rv d1">Pokreni<br><b>projekt.</b></h2>
       </div>
       <p class="contact-sub rv d2">Imaš ideju? Treba ti web stranica, redesign ili novi digitalni produkt? Napiši — odgovaram brzo.</p>
@@ -897,7 +1013,7 @@ function fsub(e) {
   const aboutConfigs = [
     { target: 10, suffix: '+', dur: 1200 },
     { target: 2,  suffix: '+', dur: 1000 },
-    { target: 8,  suffix: '', dur: 1700 },
+    { target: 100, suffix: '%', dur: 2100 },
   ];
 
   function makeCounterObserver(els, configs) {
@@ -1180,6 +1296,7 @@ function fsub(e) {
     const preCount = document.getElementById('preCount');
     const heroTl = buildHeroIntro(hasSplit);
     heroTl.pause();
+    window.__heroIntro = heroTl; // CINEMATIC VIDEO LAYER dodaje "focus pull" u isti intro
 
     let preChars = null;
     if (hasSplit) {
@@ -1224,7 +1341,7 @@ function fsub(e) {
 
     // ── NASLOVI: line reveal (jednokratno) ──
     if (hasSplit) {
-      document.querySelectorAll('#about .sec-h, #skills .sec-h, #testimonials .sec-h, .contact-h').forEach(h => {
+      document.querySelectorAll('#about .sec-h, #projects .sec-h, #concepts .sec-h, #skills .sec-h, #testimonials .sec-h, .contact-h').forEach(h => {
         const split = new SplitType(h, { types: 'lines', lineClass: 'split-line-in' });
         split.lines.forEach(l => {
           const wrap = document.createElement('span');
@@ -1251,6 +1368,7 @@ function fsub(e) {
         x: () => -dist(),
         ease: 'none',
         scrollTrigger: {
+          id: 'hscroll', // koristi ga CINEMATIC VIDEO LAYER (dolly kamera)
           trigger: '#projects',
           start: 'top top',
           end: () => '+=' + dist(),
@@ -1260,8 +1378,8 @@ function fsub(e) {
           invalidateOnRefresh: true,
           onUpdate(self) {
             gsap.set(hprogFill, { scaleX: self.progress });
-            const idx = Math.min(4, Math.floor(self.progress * 4) + 1);
-            hprogTxt.textContent = '0' + idx + ' / 04';
+            const idx = Math.min(3, Math.floor(self.progress * 3) + 1);
+            hprogTxt.textContent = '0' + idx + ' / 03';
           }
         }
       });
@@ -1290,6 +1408,232 @@ function fsub(e) {
     tl.from('.hero-bg-text', { opacity: 0, x: 60, duration: 1.3, ease: 'power3.out' }, .35);
     return tl;
   }
+})();
+</script>
+
+<!-- ═══════════ CINEMATIC VIDEO LAYER ═══════════
+     "Showreel" osjećaj: žive fotografije, rezovi, kamera, filmsko zrno.
+     Koristi već učitane GSAP + ScrollTrigger; izgled stranice se ne mijenja. -->
+<script>
+(function () {
+  // Bez GSAP-a ili uz prefers-reduced-motion: ne radimo ništa, sadržaj je odmah vidljiv.
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !(window.gsap && window.ScrollTrigger)) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.documentElement;
+  const mobile = matchMedia('(max-width: 767px)').matches;
+  root.classList.add('cine');
+
+  // ── 8. FILMSKO ZRNO ──
+  const grain = document.createElement('div');
+  grain.className = 'cine-grain';
+  grain.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(grain);
+
+  // ── Omotači slika (Projekti + Koncepti) ──
+  // .proj-img > .cine-dev (develop ulaz) > .cine-dolly (h-scroll kamera) > .cine-kb (Ken Burns) > img
+  const media = [];
+  document.querySelectorAll('#projects .proj-card, #concepts .proj-card').forEach(card => {
+    const box = card.querySelector('.proj-img');
+    const img = box && box.querySelector('img');
+    if (!img) return; // slika ne postoji → kartica ostaje neutralna, bez animacije
+    const dev = document.createElement('div');
+    const dolly = document.createElement('div');
+    const kb = document.createElement('div');
+    dev.className = 'cine-dev';
+    dolly.className = 'cine-dolly';
+    kb.className = 'cine-kb';
+    img.parentNode.insertBefore(dev, img);
+    dev.appendChild(dolly);
+    dolly.appendChild(kb);
+    kb.appendChild(img);
+    media.push({ card, box, img, dev, dolly, kb });
+  });
+
+  // ── 2. "DEVELOP" ULAZ: početno stanje odmah (ispod preloadera), animacija kad kartica uđe ──
+  gsap.set(media.map(m => m.dev), {
+    clipPath: 'inset(12% 8% round 20px)',
+    scale: 1.25,
+    filter: mobile ? 'brightness(1.15)' : 'blur(8px) brightness(1.15)'
+  });
+  function develop(m) {
+    const run = () => gsap.to(m.dev, {
+      clipPath: 'inset(0% 0% round 0px)',
+      scale: 1,
+      filter: mobile ? 'brightness(1)' : 'blur(0px) brightness(1)',
+      duration: 1.4,
+      ease: 'expo.out',
+      clearProps: 'clipPath,filter,transform'
+    });
+    // pričekaj da se (lazy) slika učita, da se ne "razvija" prazan okvir
+    if (m.img.complete) run();
+    else {
+      m.img.addEventListener('load', run, { once: true });
+      m.img.addEventListener('error', run, { once: true });
+    }
+  }
+
+  // ── 1. KEN BURNS: svaka kartica malo drugačije trajanje i smjer ──
+  media.forEach((m, i) => {
+    const dir = i % 2 ? 1 : -1;
+    m.kbTween = gsap.fromTo(m.kb,
+      { scale: 1, xPercent: 0, yPercent: 0 },
+      {
+        scale: 1.08,
+        xPercent: 2.5 * dir,
+        yPercent: (i % 3 - 1) * 2 || 1.5,
+        transformOrigin: ['50% 50%', '30% 40%', '70% 60%'][i % 3],
+        duration: 14 + (i * 2.3) % 6,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        paused: true
+      });
+  });
+  const KB_MAX_MOBILE = 3; // mobitel: nikad više od 3 Ken Burns kartice odjednom
+  const kbActive = new Set();
+
+  function startObservers() {
+    const byBox = new Map(media.map(m => [m.box, m]));
+
+    // develop: jednom po kartici (radi i u horizontalnom scrollu jer IO gleda stvarni položaj)
+    const devIO = new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      devIO.unobserve(e.target);
+      develop(byBox.get(e.target));
+    }), { threshold: .2 });
+
+    // ken burns: radi samo dok je kartica na ekranu
+    const kbIO = new IntersectionObserver(entries => entries.forEach(e => {
+      const m = byBox.get(e.target);
+      if (e.isIntersecting) {
+        if (mobile && kbActive.size >= KB_MAX_MOBILE) return;
+        kbActive.add(m);
+        m.kbTween.play();
+      } else {
+        kbActive.delete(m);
+        m.kbTween.pause();
+      }
+    }));
+
+    media.forEach(m => { devIO.observe(m.box); kbIO.observe(m.box); });
+  }
+
+  // Animacije slika krenu tek kad preloader nestane (inače bi se "razvile" ispod njega)
+  function whenPreloaderDone(fn) {
+    if (!root.classList.contains('pre-lock')) return fn();
+    const mo = new MutationObserver(() => {
+      if (root.classList.contains('pre-lock')) return;
+      mo.disconnect();
+      fn();
+    });
+    mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // ── Koncepti: ulaz kartica (bez .rv klase, da hover lift kartice ostane netaknut) ──
+  const conceptCards = gsap.utils.toArray('#concepts .proj-card');
+  gsap.set(conceptCards, { opacity: 0, y: 40, transition: 'none' });
+
+  // ScrollTriggeri koji ovise o poziciji na stranici kreiraju se tek NAKON pina
+  // horizontalnog scrolla (u init), inače im start/end ne uključuju prostor pina.
+  function buildScrollScenes() {
+    ScrollTrigger.batch(conceptCards, {
+      start: 'top 90%',
+      once: true,
+      onEnter: batch => gsap.to(batch, {
+        opacity: 1, y: 0, duration: .9, ease: 'power3.out', stagger: .1,
+        clearProps: 'opacity,transform,transition'
+      })
+    });
+
+    // ── 6. REZ U TAMNU SCENU: kontakt (i suptilno footer) se otvara kao prijelaz u filmu ──
+    gsap.fromTo('#contact',
+      { clipPath: 'inset(8% 6% round 32px)' },
+      { clipPath: 'inset(0% 0% round 0px)', ease: 'none',
+        scrollTrigger: { trigger: '#contact', start: 'top bottom', end: 'top 30%', scrub: true } });
+    gsap.fromTo('footer',
+      { clipPath: 'inset(0% 2.5% round 20px)' },
+      { clipPath: 'inset(0% 0% round 0px)', ease: 'none',
+        scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+    // zrno je malo jače na tamnoj sceni
+    ScrollTrigger.create({
+      trigger: '#contact', start: 'top 50%', endTrigger: 'footer', end: 'bottom top',
+      toggleClass: { targets: grain, className: 'on-dark' }
+    });
+  }
+
+  // ── 5. MARQUEE REAGIRA NA BRZINU SCROLLA (brzina + skewX max ±6°, glatko natrag) ──
+  const mqTrack = document.querySelector('.marquee-track');
+  const mqAnim = mqTrack && mqTrack.getAnimations ? mqTrack.getAnimations()[0] : null;
+  if (mqTrack) {
+    const mq = { rate: 1, skew: 0 };
+    const clampSkew = gsap.utils.clamp(-6, 6);
+    const applyMq = () => {
+      if (mqAnim) mqAnim.playbackRate = mq.rate;
+      mqTrack.style.setProperty('--mq-skew', mq.skew.toFixed(2) + 'deg');
+    };
+    ScrollTrigger.create({
+      onUpdate(self) {
+        const v = self.getVelocity();
+        const skew = clampSkew(v / -300);
+        const rate = 1 + Math.min(Math.abs(v) / 900, 3);
+        if (Math.abs(skew) <= Math.abs(mq.skew) && rate <= mq.rate) return;
+        mq.skew = skew;
+        mq.rate = rate;
+        applyMq();
+        gsap.to(mq, { skew: 0, rate: 1, duration: .9, ease: 'power3.out', overwrite: true, onUpdate: applyMq });
+      }
+    });
+  }
+
+  // ── 4. HERO: stalni suptilni "float" outline teksta JAKOV (parallax na scroll već postoji) ──
+  const heroFloat = gsap.to('.hero-bg-text', { y: -14, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  ScrollTrigger.create({
+    trigger: '#hero', start: 'top bottom', end: 'bottom top',
+    onToggle: self => self.isActive ? heroFloat.play() : heroFloat.pause()
+  });
+
+  const winLoaded = new Promise(r => {
+    if (document.readyState === 'complete') r();
+    else window.addEventListener('load', r, { once: true });
+  });
+  Promise.all([winLoaded, document.fonts.ready]).then(() => requestAnimationFrame(init));
+
+  function init() {
+    // ── 4. HERO "FOCUS PULL": naslov ulazi iz mutnog i šireg razmaka u oštro (dio istog intra) ──
+    const heroTl = window.__heroIntro;
+    const h1row = document.querySelector('.h1row');
+    if (heroTl && h1row && heroTl.progress() === 0) {
+      heroTl.fromTo(h1row,
+        { filter: `blur(${mobile ? 4 : 12}px)`, letterSpacing: '0.02em' },
+        { filter: 'blur(0px)', letterSpacing: getComputedStyle(h1row).letterSpacing,
+          duration: 1.6, ease: 'expo.out', clearProps: 'filter,letterSpacing' }, 0);
+    }
+
+    // ── 3. DOLLY KAMERA u horizontalnom scrollu (samo desktop, uz postojeći h-scroll) ──
+    gsap.matchMedia().add('(min-width: 901px)', () => {
+      const hs = ScrollTrigger.getById('hscroll');
+      if (!hs || !hs.animation) return;
+      root.classList.add('cine-dolly-on');
+      media.filter(m => m.card.closest('#projects')).forEach(m => {
+        gsap.fromTo(m.dolly, { xPercent: -8 }, {
+          xPercent: 8, ease: 'none',
+          scrollTrigger: {
+            trigger: m.card, containerAnimation: hs.animation,
+            start: 'left right', end: 'right left', scrub: true
+          }
+        });
+      });
+      return () => root.classList.remove('cine-dolly-on');
+    });
+
+    buildScrollScenes();
+    whenPreloaderDone(startObservers);
+    ScrollTrigger.refresh();
+  }
+
+  document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
 </script>
 </body>
