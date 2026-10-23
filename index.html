@@ -101,7 +101,7 @@ h1 b{font-weight:800;display:block}
 .ft-val{font-size:14px;font-weight:600;color:var(--ink)}
 
 /* ── PROJECTS ── */
-#projects{background:var(--bg);overflow:hidden}
+#projects{background:var(--bg);overflow:hidden;overflow:clip}
 .proj-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px;gap:24px;flex-wrap:wrap}
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .proj-card{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--bg);transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;cursor:pointer}
@@ -369,10 +369,11 @@ html.gs .split-line>span{display:block;will-change:transform}
 
 /* ═══════════ VIDEO VIBE LAYER — osjećaj filma dok se scrolla ═══════════ */
 /* filmsko zrno: vrlo suptilno, lagano "treperi" */
-.film-grain{position:fixed;inset:0;width:100%;height:100%;z-index:450;pointer-events:none;opacity:.035;
+/* zrno se pomiče transformom (GPU), ne background-positionom — inače se cijela stranica iscrtava svaki frame */
+.film-grain{position:fixed;inset:-100px;z-index:450;pointer-events:none;opacity:.035;will-change:transform;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation:grain 1s steps(8) infinite}
-@keyframes grain{0%{background-position:0 0}12%{background-position:-37px 22px}25%{background-position:41px -53px}37%{background-position:-71px -19px}50%{background-position:59px 44px}62%{background-position:-23px 83px}75%{background-position:88px -31px}87%{background-position:-61px 9px}100%{background-position:0 0}}
+@keyframes grain{0%{transform:translate3d(0,0,0)}12%{transform:translate3d(-37px,22px,0)}25%{transform:translate3d(41px,-53px,0)}37%{transform:translate3d(-71px,-19px,0)}50%{transform:translate3d(59px,44px,0)}62%{transform:translate3d(-23px,83px,0)}75%{transform:translate3d(88px,-31px,0)}87%{transform:translate3d(-61px,9px,0)}100%{transform:translate3d(0,0,0)}}
 /* ništa ne smije širiti stranicu vodoravno dok elementi ulaze sa strane */
 html.gs .sec,html.gs #contact{overflow-x:clip}
 html:not(.gs) .film-grain{display:none}
@@ -389,6 +390,11 @@ html.gs .htrack .proj-card{will-change:transform;backface-visibility:hidden}
 /* slike kao kadrovi: GSAP pomiče sliku unutar okvira */
 html.gs .proj-img img{will-change:transform}
 html.gs .marquee-track{animation:none}
+/* elementi koje JS pomiče svaki frame dobivaju vlastiti GPU sloj — bez ponovnog iscrtavanja stranice */
+.sprog-bar,html.gs .marquee-track,html.gs .contact-bg-text,html.gs .contact-inner{will-change:transform}
+@media(max-width:900px){
+  html.gs .about-g,html.gs #concepts .proj-card,html.gs #concepts .proj-body,html.gs .testi-card{will-change:transform}
+}
 @media(prefers-reduced-motion:reduce){.film-grain{display:none}}
 
 /* ── REDUCED MOTION ── */
@@ -1503,16 +1509,37 @@ function fsub(e) {
     function stackCards(cards) {
       const last = cards[cards.length - 1];
       const top = () => document.getElementById('nav').offsetHeight + 14;
+      // kartica ostaje zalijepljena dok zadnja ne dođe gore, onda cijeli "špil" odlazi zajedno.
+      // CSS sticky umjesto JS pina: lijepi ga sam browser, pa na touch scrollu nema trzaja.
+      // Sticky drži karticu do kraja roditelja, zato špil (ako iza njega ima još sadržaja) dobiva vlastiti omotač.
+      const parent = cards[0].parentElement;
+      if (parent.lastElementChild !== last) {
+        const deck = document.createElement('div');
+        const ps = getComputedStyle(parent);
+        deck.style.cssText = 'display:grid;grid-column:1/-1;gap:' + ps.rowGap + ';perspective:' + ps.perspective;
+        parent.insertBefore(deck, cards[0]);
+        cards.forEach(c => deck.appendChild(c));
+      }
+      const stuck = cards.slice(0, -1);
+      const stick = on => stuck.forEach(c => { c.style.position = on ? 'sticky' : 'relative'; c.style.top = on ? top() + 'px' : ''; });
+      // ScrollTrigger mjeri pozicije bez stickyja (inače bi izmjerio zalijepljeno mjesto)
+      ScrollTrigger.addEventListener('refreshInit', () => stick(false));
+      ScrollTrigger.addEventListener('refresh', () => stick(true));
+      stick(true);
       cards.forEach((c, i) => {
-        c.style.position = 'relative'; c.style.zIndex = i + 1;   // nova kartica uvijek preko prethodne
+        if (c === last) c.style.position = 'relative';
+        c.style.zIndex = i + 1;   // nova kartica uvijek preko prethodne
         const next = cards[i + 1];
         if (!next) return;
-        // kartica ostaje zalijepljena dok zadnja ne dođe gore, onda cijeli "špil" odlazi zajedno
-        ScrollTrigger.create({ trigger: c, start: () => 'top ' + top() + 'px', endTrigger: last, end: () => 'top ' + top() + 'px',
-          pin: true, pinSpacing: false });
-        gsap.fromTo(c, { scale: 1, filter: 'brightness(1)', rotateX: 0 },
-          { scale: .86, filter: 'brightness(.72)', rotateX: 8, transformOrigin: '50% 0%', ease: 'none',
-            scrollTrigger: { trigger: next, start: 'top bottom', end: () => 'top ' + (top() + 20) + 'px', scrub: true } });
+        // zatamnjenje: crni sloj s opacity .28 = brightness(.72), ali bez ponovnog iscrtavanja svaki frame
+        const shade = document.createElement('i');
+        shade.setAttribute('aria-hidden', 'true');
+        shade.style.cssText = 'position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;border-radius:inherit;z-index:10;will-change:opacity';
+        c.appendChild(shade);
+        gsap.timeline({ defaults: { ease: 'none' },
+            scrollTrigger: { trigger: next, start: 'top bottom', end: () => 'top ' + (top() + 20) + 'px', scrub: true } })
+          .fromTo(c, { scale: 1, rotateX: 0 }, { scale: .86, rotateX: 8, transformOrigin: '50% 0%' }, 0)
+          .fromTo(shade, { opacity: 0 }, { opacity: .28 }, 0);
       });
     }
 
